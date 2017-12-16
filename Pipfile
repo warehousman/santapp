@@ -2,5 +2,11 @@
 python_version = '3.6.3'
 
 [packages]
-py-postgresql = '*'
-flask = '*'
+click = '6.7'
+Flask = '0.12.2'
+itsdangerous = '0.24'
+Jinja2 = '2.10'
+MarkupSafem = '1.0'
+py-postgresql = '1.2.1'
+Werkzeug = '0.13'
+
