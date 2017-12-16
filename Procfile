@@ -1,1 +1,1 @@
-web: python santapp/hello.py
+web: python santapp/app.py
