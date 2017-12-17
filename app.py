@@ -10,16 +10,18 @@ db = postgresql.open('pq://dmwonkomseluvu:056095e637408a79a7afd2a510829bb8071a69
 
 
 @app.route("/", methods=['POST'])
-def name():
+def postparty():
     if not request.json or not 'name' in request.json:
         abort(400)
     user = request.json['name']
     sql = db.prepare("SELECT party FROM santa WHERE name = $1")
-    ck = sql(user)
-    if ck != [(None,)]:
-        c = ck[0]
-        d = c[0]
-        resp = jsonify({'buddy': d})
+    checkparty = sql(user)
+    if checkparty != [(None,)]:
+        a = checkparty[0][0]
+        sqlrn = db.prepare("SELECT real_name FROM santa WHERE name = $1")
+        c = sqlrn(a)
+        e = c[0][0]
+        resp = jsonify({'party': e})
     else:
         sel = db.prepare("SELECT name FROM santa WHERE has_party ISNULL AND name != $1 ORDER BY uuid LIMIT 1")
         r = sel(user)
@@ -31,8 +33,23 @@ def name():
         pupd(x,user)
         upd = db.prepare("UPDATE santa SET has_party = true WHERE name = $1")
         upd(x)
-        resp = jsonify({'buddy': x})
+        getname = db.prepare("SELECT real_name FROM santa WHERE name = $1")
+        realname = getname(x)
+        getuid = db.prepare("SELECT uuid FROM santa WHERE name = $1")
+        guid = getuid(user)
+        resp = jsonify({'party': realname, "uuid": guid})
     return resp
+
+@app.route("/<uuid>", methods=['GET'])
+def getparty(uuid):
+    if not uuid:
+        abort(400)
+    getp = db.prepare("SELECT party FROM santa WHERE uuid = $1")
+    h = getp(uuid)
+    j = h[0]
+    k = j[0]
+    return jsonify({'your party': k})
+
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
