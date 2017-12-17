@@ -19,7 +19,7 @@ def name():
     if ck != [(None,)]:
         c = ck[0]
         d = c[0]
-        resp = jsonify({'old buddy': d})
+        resp = jsonify({'buddy': d})
     else:
         sel = db.prepare("SELECT name FROM santa WHERE has_party ISNULL AND name != $1 ORDER BY uuid LIMIT 1")
         r = sel(user)
@@ -31,7 +31,7 @@ def name():
         pupd(x,user)
         upd = db.prepare("UPDATE santa SET has_party = true WHERE name = $1")
         upd(x)
-        resp = jsonify({'new buddy': x})
+        resp = jsonify({'buddy': x})
     return resp
 
 if __name__ == '__main__':
