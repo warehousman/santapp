@@ -24,19 +24,18 @@ def postparty():
         resp = jsonify({'party': e})
     else:
         sel = db.prepare("SELECT name FROM santa WHERE has_party ISNULL AND name != $1 ORDER BY uuid LIMIT 1")
-        r = sel(user)
-        print (r)
-        z=r[0]
-        x=z[0]
-        print(x)
+        setparty = sel(user)
+        z=setparty[0][0]
         pupd = db.prepare("UPDATE santa SET party = $1 WHERE name = $2")
-        pupd(x,user)
+        pupd(z,user)
         upd = db.prepare("UPDATE santa SET has_party = true WHERE name = $1")
-        upd(x)
+        upd(z)
         getname = db.prepare("SELECT real_name FROM santa WHERE name = $1")
-        realname = getname(x)
+        x = getname(z)
+        realname = x[0][0]
         getuid = db.prepare("SELECT uuid FROM santa WHERE name = $1")
-        guid = getuid(user)
+        y = getuid(user)
+        guid = y[0][0]
         resp = jsonify({'party': realname, "uuid": guid})
     return resp
 
