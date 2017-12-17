@@ -45,10 +45,17 @@ def get_party_by_id(uuid):
 
 @app.route("/", methods=['POST'])
 def postparty():
+
+    # Logs
+    print('Request:', request.json)
+
     assert request.json, abort(400)
     assert 'name' in request.json, abort(400)
 
     party = get_party(request.json['name'])
+
+    # Logs
+    print('Party:', party)
 
     assert len(party), abort(404)
 
