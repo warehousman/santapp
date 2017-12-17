@@ -36,7 +36,7 @@ def postparty():
         getuid = db.prepare("SELECT uuid FROM santa WHERE name = $1")
         y = getuid(user)
         guid = y[0][0]
-        resp = jsonify({'party': realname, "uuid": guid})
+        resp = jsonify({'party': realname, "your_uuid": guid})
     return resp
 
 @app.route("/<uuid>", methods=['GET'])
@@ -44,10 +44,9 @@ def getparty(uuid):
     if not uuid:
         abort(400)
     getp = db.prepare("SELECT party FROM santa WHERE uuid = $1")
-    h = getp(uuid)
-    j = h[0]
-    k = j[0]
-    return jsonify({'your party': k})
+    pty = getp(uuid)
+    partyinfo = pty[0][0]
+    return jsonify({'your_party': partyinfo})
 
 
 if __name__ == '__main__':
