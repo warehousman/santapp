@@ -1,6 +1,7 @@
 import os
 
 import postgresql
+from uuid import UUID
 from flask import Flask, jsonify
 from flask import abort
 from flask import request
@@ -72,6 +73,11 @@ def postparty():
 @app.route("/<uuid>", methods=['GET'])
 def getparty(uuid):
     assert uuid, abort(400)
+
+    try:
+        UUID(uuid, version=4)
+    except ValueError:
+        abort(400)
 
     party = get_party_by_id(uuid)
     assert len(party), abort(404)
