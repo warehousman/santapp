@@ -17,7 +17,7 @@ UPDATE_PARTY = """UPDATE santa SET party = $1 WHERE name = $2"""
 UPDATE_CANDIDATE = """UPDATE santa SET has_party = true WHERE name = $1"""
 
 app = Flask(__name__)
-db = postgresql.open('pq://dmwonkomseluvu:056095e637408a79a7afd2a510829bb8071a69a237c9aa48d4e7af7831980c17@ec2-54-217-250-0.eu-west-1.compute.amazonaws.com:5432/d5frennvu4ie97')
+db = postgresql.open(os.environ["DB_URL"])
 
 
 def get_party(user):
